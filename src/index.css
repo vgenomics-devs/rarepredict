@@ -8,33 +8,33 @@ All colors MUST be HSL for consistent theming.
 
 @layer base {
   :root {
-    /* Medical color palette - inspired by healthcare and trust */
+    /* Brand color palette - Deep Navy, Electric Blue, Soft Gray */
     --background: 0 0% 100%;
-    --foreground: 0 0% 8%;
+    --foreground: 222 47% 11%;
 
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 8%;
+    --card-foreground: 222 47% 11%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 8%;
+    --popover-foreground: 222 47% 11%;
 
-    /* Medical blue-grey primary */
-    --primary: 210 20% 25%;
+    /* Deep Navy primary */
+    --primary: 222 47% 11%;
     --primary-foreground: 0 0% 98%;
 
-    /* Warm neutral secondary */
-    --secondary: 25 15% 85%;
-    --secondary-foreground: 0 0% 8%;
+    /* Soft Gray secondary */
+    --secondary: 220 13% 91%;
+    --secondary-foreground: 222 47% 11%;
 
     /* Muted backgrounds */
-    --muted: 210 15% 96%;
-    --muted-foreground: 210 10% 40%;
+    --muted: 220 13% 96%;
+    --muted-foreground: 222 20% 40%;
 
-    /* Medical accent - soft purple */
-    --accent: 270 15% 85%;
-    --accent-foreground: 270 20% 20%;
+    /* Electric Blue accent */
+    --accent: 213 94% 68%;
+    --accent-foreground: 0 0% 98%;
 
-    /* Medical success - soft green */
+    /* Success - keeping green */
     --success: 145 35% 45%;
     --success-foreground: 0 0% 98%;
 
@@ -43,9 +43,9 @@ All colors MUST be HSL for consistent theming.
     --destructive-foreground: 0 0% 98%;
 
     /* Borders and inputs */
-    --border: 210 15% 88%;
-    --input: 210 15% 94%;
-    --ring: 210 20% 25%;
+    --border: 220 13% 88%;
+    --input: 220 13% 94%;
+    --ring: 213 94% 68%;
 
     --radius: 0.5rem;
 
