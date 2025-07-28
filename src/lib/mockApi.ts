@@ -9,7 +9,7 @@ export interface Disease {
   links: { title: string; url: string; }[];
 }
 
-const MOCK_DISEASES: Disease[] = [
+export const mockDiseases: Disease[] = [
   {
     id: "1",
     name: "Ehlers-Danlos Syndrome",
@@ -77,7 +77,7 @@ export const predictRareDiseases = async (symptoms: string[], age: number): Prom
   await new Promise(resolve => setTimeout(resolve, 1500));
   
   // Mock algorithm: Score diseases based on symptom overlap
-  const scoredDiseases = MOCK_DISEASES.map(disease => {
+  const scoredDiseases = mockDiseases.map(disease => {
     const matchingSymptoms = disease.symptoms.filter(symptom => 
       symptoms.some(userSymptom => 
         symptom.toLowerCase().includes(userSymptom.toLowerCase()) ||

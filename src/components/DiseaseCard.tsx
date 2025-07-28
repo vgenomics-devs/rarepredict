@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 import { TrendingUp, AlertTriangle, CheckCircle, Info } from "lucide-react";
 
 interface Disease {
@@ -15,11 +16,11 @@ interface Disease {
 
 interface DiseaseCardProps {
   disease: Disease;
-  onClick: () => void;
   index: number;
 }
 
-export function DiseaseCard({ disease, onClick, index }: DiseaseCardProps) {
+export function DiseaseCard({ disease, index }: DiseaseCardProps) {
+  const navigate = useNavigate();
   const getConfidenceColor = (confidence: number) => {
     if (confidence >= 80) return "bg-success text-success-foreground";
     if (confidence >= 60) return "bg-accent text-accent-foreground";
@@ -47,7 +48,7 @@ export function DiseaseCard({ disease, onClick, index }: DiseaseCardProps) {
         "animate-fade-in"
       )}
       style={{ animationDelay: `${index * 150}ms` }}
-      onClick={onClick}
+      onClick={() => navigate(`/disease/${disease.id}`)}
     >
       <CardContent className="p-6 space-y-4">
         <div className="flex items-start justify-between gap-3">

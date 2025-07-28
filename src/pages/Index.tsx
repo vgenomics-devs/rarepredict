@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { SymptomSelector } from "@/components/SymptomSelector";
 import { DiseaseCard } from "@/components/DiseaseCard";
-import { DiseaseDetailModal } from "@/components/DiseaseDetailModal";
 import { predictRareDiseases, type Disease } from "@/lib/mockApi";
 import { useToast } from "@/hooks/use-toast";
 
@@ -14,8 +13,6 @@ const Index = () => {
   const [age, setAge] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const [predictions, setPredictions] = useState<Disease[]>([]);
-  const [selectedDisease, setSelectedDisease] = useState<Disease | null>(null);
-  const [showModal, setShowModal] = useState(false);
   const { toast } = useToast();
 
   const handlePredict = async () => {
@@ -125,25 +122,12 @@ const Index = () => {
                   key={disease.id}
                   disease={disease}
                   index={index}
-                  onClick={() => {
-                    setSelectedDisease(disease);
-                    setShowModal(true);
-                  }}
                 />
               ))}
             </div>
           </div>
         )}
       </main>
-
-      <DiseaseDetailModal
-        disease={selectedDisease}
-        isOpen={showModal}
-        onClose={() => {
-          setShowModal(false);
-          setSelectedDisease(null);
-        }}
-      />
     </div>
   );
 };
