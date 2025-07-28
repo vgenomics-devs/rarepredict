@@ -113,17 +113,25 @@ const Index = () => {
         </Card>
 
         {predictions.length > 0 && (
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {predictions.map((disease) => (
-              <DiseaseCard
-                key={disease.id}
-                disease={disease}
-                onClick={() => {
-                  setSelectedDisease(disease);
-                  setShowModal(true);
-                }}
-              />
-            ))}
+          <div className="space-y-6">
+            <div className="text-center space-y-2">
+              <h2 className="font-jakarta text-2xl font-bold text-foreground">Prediction Results</h2>
+              <p className="text-muted-foreground font-jakarta">Based on your symptoms and age, here are potential rare diseases to consider:</p>
+            </div>
+            
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {predictions.map((disease, index) => (
+                <DiseaseCard
+                  key={disease.id}
+                  disease={disease}
+                  index={index}
+                  onClick={() => {
+                    setSelectedDisease(disease);
+                    setShowModal(true);
+                  }}
+                />
+              ))}
+            </div>
           </div>
         )}
       </main>
