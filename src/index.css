@@ -32,12 +32,23 @@
 }
 
 @keyframes aurora {
-  from {
-    background-position: 50% 50%, 50% 50%;
+  0%, 100% {
+    transform: translateX(0px) translateY(0px) scale(1);
   }
-  to {
-    background-position: 350% 50%, 350% 50%;
+  33% {
+    transform: translateX(30px) translateY(-20px) scale(1.1);
   }
+  66% {
+    transform: translateX(-20px) translateY(10px) scale(0.9);
+  }
+}
+
+.animation-delay-1000 {
+  animation-delay: 1s;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
 }
 
 /* RarePredict Medical Design System. All colors, gradients, fonts, etc defined here. 
