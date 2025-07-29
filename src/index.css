@@ -135,6 +135,16 @@ All colors MUST be HSL for consistent theming.
 
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
+}
+
+@layer utilities {
+  .bg-size-200 {
+    background-size: 200% 200%;
+  }
+  
+  .bg-pos-100 {
+    background-position: 100% 0;
+  }
 
   .dark {
     --background: 222.2 84% 4.9%;

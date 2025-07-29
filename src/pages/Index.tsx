@@ -73,107 +73,149 @@ const Index = () => {
         />
       
       {/* Trust Indicators */}
-      <section className="py-12 bg-background/50">
-        <div className="max-w-7xl mx-auto px-4">
+      <section className="py-16 bg-gradient-to-b from-slate-900/50 to-background relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-accent/5 to-transparent" />
+        <div className="max-w-7xl mx-auto px-4 relative">
+          <div className="text-center mb-12">
+            <h2 className="font-jakarta text-3xl font-bold text-foreground mb-4">Trusted by Healthcare Professionals</h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">Built with the highest standards of security, accuracy, and clinical validation</p>
+          </div>
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="flex items-center gap-4 p-6 bg-background rounded-lg shadow-sm">
-              <div className="flex items-center justify-center w-12 h-12 bg-success/10 rounded-lg">
-                <Shield className="h-6 w-6 text-success" />
+            <div className="group flex items-center gap-6 p-8 bg-card/80 backdrop-blur-sm rounded-2xl shadow-lg border border-border/50 hover:shadow-xl hover:border-accent/30 transition-all duration-300">
+              <div className="flex items-center justify-center w-16 h-16 bg-success/10 rounded-2xl group-hover:bg-success/20 transition-colors">
+                <Shield className="h-8 w-8 text-success" />
               </div>
               <div>
-                <h3 className="font-jakarta font-semibold text-foreground">HIPAA Compliant</h3>
-                <p className="text-sm text-muted-foreground">Your health data is secure and protected</p>
+                <h3 className="font-jakarta font-bold text-xl text-foreground mb-2">HIPAA Compliant</h3>
+                <p className="text-muted-foreground leading-relaxed">Your health data is secure and protected with enterprise-grade encryption</p>
               </div>
             </div>
-            <div className="flex items-center gap-4 p-6 bg-background rounded-lg shadow-sm">
-              <div className="flex items-center justify-center w-12 h-12 bg-accent/10 rounded-lg">
-                <TrendingUp className="h-6 w-6 text-accent" />
+            <div className="group flex items-center gap-6 p-8 bg-card/80 backdrop-blur-sm rounded-2xl shadow-lg border border-border/50 hover:shadow-xl hover:border-accent/30 transition-all duration-300">
+              <div className="flex items-center justify-center w-16 h-16 bg-accent/10 rounded-2xl group-hover:bg-accent/20 transition-colors">
+                <TrendingUp className="h-8 w-8 text-accent" />
               </div>
               <div>
-                <h3 className="font-jakarta font-semibold text-foreground">Evidence-Based</h3>
-                <p className="text-sm text-muted-foreground">Powered by medical research and data</p>
+                <h3 className="font-jakarta font-bold text-xl text-foreground mb-2">Evidence-Based</h3>
+                <p className="text-muted-foreground leading-relaxed">Powered by the latest medical research and validated clinical data</p>
               </div>
             </div>
-            <div className="flex items-center gap-4 p-6 bg-background rounded-lg shadow-sm">
-              <div className="flex items-center justify-center w-12 h-12 bg-primary/10 rounded-lg">
-                <Stethoscope className="h-6 w-6 text-primary" />
+            <div className="group flex items-center gap-6 p-8 bg-card/80 backdrop-blur-sm rounded-2xl shadow-lg border border-border/50 hover:shadow-xl hover:border-accent/30 transition-all duration-300">
+              <div className="flex items-center justify-center w-16 h-16 bg-primary/10 rounded-2xl group-hover:bg-primary/20 transition-colors">
+                <Brain className="h-8 w-8 text-primary" />
               </div>
               <div>
-                <h3 className="font-jakarta font-semibold text-foreground">Clinically Validated</h3>
-                <p className="text-sm text-muted-foreground">Trusted by healthcare professionals</p>
+                <h3 className="font-jakarta font-bold text-xl text-foreground mb-2">AI-Powered</h3>
+                <p className="text-muted-foreground leading-relaxed">Advanced machine learning algorithms trained on millions of cases</p>
               </div>
-            </div>p[]
+            </div>
           </div>
         </div>
       </section>
 
         {/* Main Prediction Form */}
-        <section id="get-started" className="max-w-7xl mx-auto px-4 py-16">
-        <div className="text-center space-y-4 mb-12">
-          <h2 className="font-jakarta text-3xl font-bold text-foreground">Start Your Analysis</h2>
-          <p className="text-muted-foreground font-jakarta text-lg max-w-2xl mx-auto">
-            Enter your symptoms and age to receive AI-powered insights into potential rare diseases. 
-            Our advanced algorithm analyzes patterns to provide accurate predictions.
-          </p>
-        </div>
-
-        <Card className="max-w-2xl mx-auto mb-12 bg-background/80 backdrop-blur-sm shadow-xl border-0 ring-1 ring-border/50">
-          <CardContent className="p-8 space-y-8">
-            <div className="relative">
-              <SymptomSelector 
-                selectedSymptoms={selectedSymptoms}
-                onSymptomsChange={setSelectedSymptoms}
-              />
+        <section id="get-started" className="max-w-7xl mx-auto px-4 py-20">
+          <div className="text-center space-y-6 mb-16">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 rounded-full border border-accent/20">
+              <Activity className="h-4 w-4 text-accent" />
+              <span className="text-sm font-medium text-accent">AI-Powered Analysis</span>
             </div>
-
-            <div className="space-y-3">
-              <label className="text-sm font-jakarta font-semibold text-foreground flex items-center gap-2">
-                Age *
-                <span className="text-xs text-muted-foreground font-normal">(Required for accurate analysis)</span>
-              </label>
-              <Input
-                type="number"
-                min="1"
-                max="120"
-                placeholder="Enter your age"
-                value={age}
-                onChange={(e) => setAge(e.target.value)}
-                className="font-jakarta text-lg h-12"
-              />
-            </div>
-
-            <Button 
-              onClick={handlePredict}
-              disabled={isLoading}
-              className="w-full font-jakarta font-semibold text-lg h-14 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 transition-all duration-300"
-              size="lg"
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 className="h-5 w-5 mr-3 animate-spin" />
-                  Analyzing symptoms...
-                </>
-              ) : (
-                <>
-                  <Activity className="h-5 w-5 mr-3" />
-                  Predict Rare Diseases
-                </>
-              )}
-            </Button>
-            
-            <p className="text-xs text-muted-foreground text-center font-jakarta">
-              This tool is for informational purposes only and should not replace professional medical advice.
+            <h2 className="font-jakarta text-4xl md:text-5xl font-bold text-foreground leading-tight">
+              Start Your Health
+              <span className="block bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                Analysis Today
+              </span>
+            </h2>
+            <p className="text-muted-foreground font-jakarta text-xl max-w-3xl mx-auto leading-relaxed">
+              Enter your symptoms and age to receive comprehensive AI-powered insights into potential rare diseases. 
+              Our advanced algorithm analyzes complex patterns to provide accurate, personalized predictions.
             </p>
-          </CardContent>
-        </Card>
+          </div>
+
+          <Card className="max-w-3xl mx-auto mb-16 bg-card/60 backdrop-blur-xl shadow-2xl border-0 ring-1 ring-border/20 overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-primary/5" />
+            <CardContent className="relative p-10 space-y-10">
+              <div className="space-y-6">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="flex items-center justify-center w-10 h-10 bg-primary/10 rounded-lg">
+                    <Brain className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-jakarta font-bold text-xl text-foreground">Symptom Analysis</h3>
+                    <p className="text-muted-foreground">Select all symptoms you're experiencing</p>
+                  </div>
+                </div>
+                <SymptomSelector 
+                  selectedSymptoms={selectedSymptoms}
+                  onSymptomsChange={setSelectedSymptoms}
+                />
+              </div>
+
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="flex items-center justify-center w-10 h-10 bg-accent/10 rounded-lg">
+                    <Users className="h-5 w-5 text-accent" />
+                  </div>
+                  <div>
+                    <h3 className="font-jakarta font-bold text-xl text-foreground">Age Information</h3>
+                    <p className="text-muted-foreground">Required for accurate analysis and predictions</p>
+                  </div>
+                </div>
+                <Input
+                  type="number"
+                  min="1"
+                  max="120"
+                  placeholder="Enter your age (1-120)"
+                  value={age}
+                  onChange={(e) => setAge(e.target.value)}
+                  className="font-jakarta text-lg h-14 border-border/50 focus:border-accent bg-background/50 backdrop-blur-sm"
+                />
+              </div>
+
+              <Button 
+                onClick={handlePredict}
+                disabled={isLoading}
+                className="w-full font-jakarta font-bold text-lg h-16 bg-gradient-to-r from-primary via-accent to-primary bg-size-200 hover:bg-pos-100 transition-all duration-500 shadow-lg hover:shadow-xl relative overflow-hidden group"
+                size="lg"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                {isLoading ? (
+                  <>
+                    <Loader2 className="h-6 w-6 mr-3 animate-spin" />
+                    Analyzing your symptoms...
+                  </>
+                ) : (
+                  <>
+                    <Activity className="h-6 w-6 mr-3" />
+                    Analyze & Predict Rare Diseases
+                  </>
+                )}
+              </Button>
+              
+              <div className="flex items-center justify-center gap-2 pt-4">
+                <CheckCircle className="h-4 w-4 text-success" />
+                <p className="text-sm text-muted-foreground text-center font-jakarta">
+                  This tool is for informational purposes only and should not replace professional medical advice.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
 
         {predictions.length > 0 && (
-          <div className="space-y-8">
-            <div className="text-center space-y-3">
-              <h2 className="font-jakarta text-3xl font-bold text-foreground">Analysis Results</h2>
-              <p className="text-muted-foreground font-jakarta text-lg max-w-3xl mx-auto">
+          <div className="space-y-12">
+            <div className="text-center space-y-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-success/10 rounded-full border border-success/20">
+                <CheckCircle className="h-4 w-4 text-success" />
+                <span className="text-sm font-medium text-success">Analysis Complete</span>
+              </div>
+              <h2 className="font-jakarta text-4xl md:text-5xl font-bold text-foreground leading-tight">
+                Your Analysis
+                <span className="block bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                  Results
+                </span>
+              </h2>
+              <p className="text-muted-foreground font-jakarta text-xl max-w-4xl mx-auto leading-relaxed">
                 Based on your symptoms and age, here are potential rare diseases to consider. 
-                Click on any result to view detailed information and medical resources.
+                Each result includes detailed information, medical resources, and next steps for consultation.
               </p>
             </div>
             
