@@ -7,8 +7,7 @@ import { SymptomSelector } from "@/components/SymptomSelector";
 import { DiseaseCard } from "@/components/DiseaseCard";
 import { predictRareDiseases, type Disease } from "@/lib/mockApi";
 import { useToast } from "@/hooks/use-toast";
-import medicalHero from "@/assets/medical-hero.jpg";
-import medicalIconsBg from "@/assets/medical-icons-bg.jpg";
+import { HeroSection } from "@/components/HeroSection";
 
 const Index = () => {
   const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([]);
@@ -52,7 +51,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-accent/5">
+    <div className="min-h-screen flex flex-col">
       {/* Header */}
       <header className="bg-background/80 backdrop-blur-md border-b shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 py-4">
@@ -67,66 +66,22 @@ const Index = () => {
           </div>
         </div>
       </header>
+      
+      <main className="flex-1">
 
       {/* Hero Section */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/5"></div>
-        <div 
-          className="absolute inset-0 opacity-10 bg-cover bg-center"
-          style={{ backgroundImage: `url(${medicalIconsBg})` }}
-        ></div>
-        
-        <div className="relative max-w-7xl mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8 animate-fade-in">
-              <div className="space-y-4">
-                <h2 className="font-jakarta text-5xl lg:text-6xl font-bold text-foreground leading-tight">
-                  Advanced <span className="text-accent">AI</span> for<br />
-                  Rare Disease<br />
-                  <span className="text-primary">Detection</span>
-                </h2>
-                <p className="text-xl text-muted-foreground font-jakarta leading-relaxed max-w-lg">
-                  Leverage cutting-edge artificial intelligence to analyze symptoms and identify potential rare diseases with unprecedented accuracy.
-                </p>
-              </div>
-              
-              <div className="grid grid-cols-3 gap-6">
-                <div className="text-center space-y-2">
-                  <div className="flex items-center justify-center w-12 h-12 bg-accent/10 rounded-lg mx-auto">
-                    <Brain className="h-6 w-6 text-accent" />
-                  </div>
-                  <div className="text-2xl font-bold text-foreground">5000+</div>
-                  <div className="text-sm text-muted-foreground font-jakarta">Diseases Analyzed</div>
-                </div>
-                <div className="text-center space-y-2">
-                  <div className="flex items-center justify-center w-12 h-12 bg-success/10 rounded-lg mx-auto">
-                    <CheckCircle className="h-6 w-6 text-success" />
-                  </div>
-                  <div className="text-2xl font-bold text-foreground">95%</div>
-                  <div className="text-sm text-muted-foreground font-jakarta">Accuracy Rate</div>
-                </div>
-                <div className="text-center space-y-2">
-                  <div className="flex items-center justify-center w-12 h-12 bg-primary/10 rounded-lg mx-auto">
-                    <Users className="h-6 w-6 text-primary" />
-                  </div>
-                  <div className="text-2xl font-bold text-foreground">10K+</div>
-                  <div className="text-sm text-muted-foreground font-jakarta">Patients Helped</div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="relative animate-scale-in" style={{ animationDelay: "300ms" }}>
-              <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-primary/20 rounded-2xl blur-3xl"></div>
-              <img 
-                src={medicalHero}
-                alt="Medical AI Technology"
-                className="relative w-full h-auto rounded-2xl shadow-2xl"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
+      <HeroSection
+        title="Your health journey starts with"
+        subtitle="understanding, clarity, precision, empowerment"
+        description="AI-powered insights to help you understand and navigate rare health conditions with confidence. Our advanced analysis provides personalized information to support your health journey."
+        primaryButtonText="Get Started"
+        primaryButtonHref="#get-started"
+        secondaryButtonText="Learn More"
+        secondaryButtonHref="#how-it-works"
+      />
 
+      </main>
+      
       {/* Trust Indicators */}
       <section className="py-12 bg-background/50">
         <div className="max-w-7xl mx-auto px-4">
@@ -157,7 +112,7 @@ const Index = () => {
                 <h3 className="font-jakarta font-semibold text-foreground">Clinically Validated</h3>
                 <p className="text-sm text-muted-foreground">Trusted by healthcare professionals</p>
               </div>
-            </div>
+            </div>p[]
           </div>
         </div>
       </section>

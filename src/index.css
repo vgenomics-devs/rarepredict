@@ -2,6 +2,44 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Metallic shine effect */
+@keyframes metal-shine {
+  0% { filter: brightness(1) contrast(1.1); }
+  50% { filter: brightness(1.1) contrast(1.2); }
+  100% { filter: brightness(1) contrast(1.1); }
+}
+
+/* Metallic noise texture */
+.metallic-shine {
+  position: relative;
+  overflow: hidden;
+  animation: metal-shine 5s ease-in-out infinite;
+}
+
+.metallic-shine::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 50px 50px, 100px 100px;
+  background-blend-mode: overlay;
+  pointer-events: none;
+}
+
+@keyframes aurora {
+  from {
+    background-position: 50% 50%, 50% 50%;
+  }
+  to {
+    background-position: 350% 50%, 350% 50%;
+  }
+}
+
 /* RarePredict Medical Design System. All colors, gradients, fonts, etc defined here. 
 All colors MUST be HSL for consistent theming.
 */
