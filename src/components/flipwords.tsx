@@ -13,32 +13,44 @@ export const FlipWords = ({
   className?: string;
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const currentWord = words[currentIndex];
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % words.length);
-    }, duration);
+    // Start the animation sequence
+    const timer = setTimeout(() => {
+      setIsVisible(false);
+      
+      // After fade out, change the word and fade in
+      const changeWord = setTimeout(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % words.length);
+        setIsVisible(true);
+      }, 300); // Wait for fade out to complete
 
-    return () => clearInterval(interval);
-  }, [duration, words.length]);
+      return () => clearTimeout(changeWord);
+    }, duration - 300); // Start fade out slightly before the word change
+
+    return () => clearTimeout(timer);
+  }, [currentIndex, duration, words.length]);
 
   return (
-    <div className="inline-block relative">
+    <div className="inline-block relative min-h-[1.5em]">
       <AnimatePresence mode="wait">
-        <motion.span
-          key={currentWord}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20, position: 'absolute' }}
-          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className={cn("inline-block w-full text-left", className)}
-          onAnimationStart={() => setIsAnimating(true)}
-          onAnimationComplete={() => setIsAnimating(false)}
-        >
-          {currentWord}
-        </motion.span>
+        {isVisible && (
+          <motion.span
+            key={currentWord}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ 
+              duration: 0.3, 
+              ease: "easeInOut" 
+            }}
+            className={cn("inline-block w-full text-left", className)}
+          >
+            {currentWord}
+          </motion.span>
+        )}
       </AnimatePresence>
     </div>
   );

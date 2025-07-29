@@ -3,12 +3,32 @@ import { Activity, Loader2, Stethoscope, Shield, Users, TrendingUp, CheckCircle,
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
+import { PointerHighlight } from "@/components/ui/pointer-highlight";
+import { TypewriterEffect } from "@/components/ui/typewriter-effect";
+import medicalHero from '@/assets/medical-hero.jpg';
+import medicalIconsBg from '@/assets/medical-icons-bg.jpg';
+import { Compare } from "@/components/ui/compare";
 import { SymptomSelector } from "@/components/SymptomSelector";
 import { DiseaseCard } from "@/components/DiseaseCard";
 import { predictRareDiseases, type Disease } from "@/lib/mockApi";
 import { useToast } from "@/hooks/use-toast";
 import { HeroSection } from "@/components/HeroSection";
 import { FloatingNav } from "@/components/ui/navbar";
+
+function CompareDemo() {
+  return (
+    <div className="p-4 border rounded-3xl dark:bg-neutral-900 bg-neutral-100 border-neutral-200 dark:border-neutral-800 px-4">
+      <Compare
+        firstImage="https://assets.aceternity.com/code-problem.png"
+        secondImage="https://assets.aceternity.com/code-solution.png"
+        firstImageClassName="object-cover object-left-top"
+        secondImageClassname="object-cover object-left-top"
+        className="h-[250px] w-[200px] md:h-[500px] md:w-[500px]"
+        slideMode="hover"
+      />
+    </div>
+  );
+}
 
 const Index = () => {
   const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([]);
@@ -109,10 +129,75 @@ const Index = () => {
               </div>
             </div>
           </div>
+          
+          {/* Compare Component */}
+          <div className="mt-20 w-full">
+            <div className="bg-black p-8 mb-12 w-full">
+              <h2 className="font-jakarta text-3xl md:text-4xl font-bold text-white text-center max-w-4xl mx-auto">
+                What to choose? See the{' '}
+                <span className="relative inline-block">
+                  <PointerHighlight 
+                    rectangleClassName="border-2 border-white rounded-sm"
+                    pointerClassName="text-blue-400"
+                  >
+                    <span className="relative z-10 px-1">Difference</span>
+                  </PointerHighlight>
+                </span>{' '}
+                for yourself
+              </h2>
+            </div>
+            <div className="relative">
+              <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-48 z-50 w-56 pr-16">
+                <div className="flex flex-col items-end">
+                  <TypewriterEffect
+                    words={[
+                      {
+                        text: "Without",
+                        className: "text-gray-700 dark:text-gray-200 text-2xl md:text-3xl font-semibold text-right"
+                      },
+                      {
+                        text: "RarePredict",
+                        className: "whitespace-nowrap bg-gradient-to-r from-blue-500 to-blue-600 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent text-3xl md:text-4xl font-bold text-right"
+                      }
+                    ]}
+                    cursorClassName="h-8 bg-blue-500"
+                    className="space-y-1"
+                  />
+                </div>
+              </div>
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-48 z-50 w-56 pl-16">
+                <div className="flex flex-col items-start">
+                  <TypewriterEffect
+                    words={[
+                      {
+                        text: "With",
+                        className: "text-gray-700 dark:text-gray-200 text-2xl md:text-3xl font-semibold"
+                      },
+                      {
+                        text: "RarePredict",
+                        className: "whitespace-nowrap bg-gradient-to-r from-blue-500 to-blue-600 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent text-3xl md:text-4xl font-bold"
+                      }
+                    ]}
+                    cursorClassName="h-8 bg-blue-500"
+                    className="space-y-1"
+                  />
+                </div>
+              </div>
+              <div className="flex justify-center">
+                <Compare 
+                  firstImage={medicalHero}
+                  secondImage={medicalIconsBg}
+                  className="w-full h-[500px] rounded-2xl overflow-hidden"
+                  slideMode="hover"
+                  showHandlebar={true}
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-        {/* Main Prediction Form */}
+      {/* Main Prediction Form */}
         <section id="get-started" className="max-w-7xl mx-auto px-4 py-20">
           <div className="text-center space-y-6 mb-16">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 rounded-full border border-accent/20">

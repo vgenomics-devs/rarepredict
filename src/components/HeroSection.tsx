@@ -40,11 +40,13 @@ export function HeroSection({
         <h1 className="font-jakarta text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
           <span className="block mb-4 text-foreground/90">{title}</span>
           <span className="relative inline-block">
-            <FlipWords 
-              words={subtitle.split(', ')}
-              className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400"
-              duration={3000}
-            />
+            <div className="inline-block">
+              <FlipWords 
+                words={subtitle.split(', ')}
+                className="font-bold text-white"
+                duration={3000}
+              />
+            </div>
           </span>
         </h1>
         {/* <p className="text-lg md:text-xl text-muted-foreground/90 max-w-3xl mx-auto leading-relaxed mt-6">
