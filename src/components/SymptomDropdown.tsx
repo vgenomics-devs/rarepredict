@@ -9,6 +9,7 @@ interface SymptomDropdownProps {
   symptoms: Symptom[];
   filteredSymptoms: Symptom[];
   isLoading: boolean;
+  isSearching?: boolean;
   searchTerm: string;
   onSearchChange: (value: string) => void;
   onSymptomSelect: (symptom: Symptom) => void;
@@ -20,6 +21,7 @@ export function SymptomDropdown({
   symptoms = [],
   filteredSymptoms = [],
   isLoading = false,
+  isSearching = false,
   searchTerm = "",
   onSearchChange = () => {},
   onSymptomSelect = () => {},
@@ -79,10 +81,10 @@ export function SymptomDropdown({
 
         {isOpen && (
           <Card className="absolute z-50 w-full mt-2 bg-background/95 backdrop-blur-md border border-border/50 shadow-xl">
-            {isLoading ? (
+            {isSearching ? (
               <div className="flex items-center justify-center p-6">
                 <Loader2 className="h-5 w-5 animate-spin mr-2 text-primary" />
-                <span className="text-sm text-muted-foreground">Loading symptoms...</span>
+                <span className="text-sm text-muted-foreground">Searching symptoms...</span>
               </div>
             ) : safeFilteredSymptoms.length === 0 ? (
               <div className="p-6 text-center">

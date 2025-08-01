@@ -21,77 +21,116 @@ interface SymptomSelectorProps {
 
 export function SymptomSelector({ selectedSymptoms = [], onSymptomsChange }: SymptomSelectorProps) {
   const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [symptoms, setSymptoms] = useState<Symptom[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedSymptom, setSelectedSymptom] = useState<Symptom | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
 
-  // Fetch symptoms from API
+  // Debounce search term to avoid excessive API calls
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
+  // Search symptoms via API with debounced search term
   useEffect(() => {
     let isMounted = true;
+    let abortController = new AbortController();
     
-    const fetchSymptoms = async () => {
+    const searchSymptoms = async () => {
+      if (!debouncedSearchTerm || debouncedSearchTerm.length < 2) {
+        setSymptoms([]);
+        setIsSearching(false);
+        return;
+      }
+
+      setIsSearching(true);
+      setError(null);
+
       try {
-        const response = await fetch('http://34.93.204.92:3001/doctors/symptoms');
+        // Try server-side search first, fallback to client-side if not available
+        const searchUrl = `http://34.93.204.92:3001/doctors/symptoms/search?q=${encodeURIComponent(debouncedSearchTerm)}`;
+        const fallbackUrl = 'http://34.93.204.92:3001/doctors/symptoms';
+        
+        let response;
+        try {
+          response = await fetch(searchUrl, { signal: abortController.signal });
+        } catch {
+          // Fallback to full dataset if search endpoint doesn't exist
+          response = await fetch(fallbackUrl, { signal: abortController.signal });
+        }
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
+        
         const data = await response.json();
+        
         if (isMounted) {
-          setSymptoms(Array.isArray(data) ? data : []);
-          setError(null);
+          let filteredData = Array.isArray(data) ? data : [];
+          
+          // If we got full dataset, filter client-side (but limit results)
+          if (response.url.includes('symptoms') && !response.url.includes('search')) {
+            const searchLower = debouncedSearchTerm.toLowerCase().trim();
+            filteredData = filteredData
+              .filter(symptom => {
+                if (!symptom?.name) return false;
+                
+                // Check name
+                if (symptom.name.toLowerCase().includes(searchLower)) return true;
+                
+                // Check synonyms
+                return Array.isArray(symptom.synonyms) && 
+                  symptom.synonyms.some(synonym => 
+                    typeof synonym === 'string' && 
+                    synonym.toLowerCase().includes(searchLower)
+                  );
+              })
+              .slice(0, 50) // Limit to 50 results for performance
+              .sort((a, b) => {
+                // Prioritize exact matches
+                const aExact = a.name.toLowerCase().startsWith(searchLower);
+                const bExact = b.name.toLowerCase().startsWith(searchLower);
+                if (aExact && !bExact) return -1;
+                if (!aExact && bExact) return 1;
+                return a.name.localeCompare(b.name);
+              });
+          }
+          
+          setSymptoms(filteredData);
         }
       } catch (err) {
-        console.error('Error fetching symptoms:', err);
-        if (isMounted) {
-          setError(err instanceof Error ? err.message : 'Failed to load symptoms');
+        if (err.name !== 'AbortError') {
+          console.error('Error searching symptoms:', err);
+          if (isMounted) {
+            setError(err instanceof Error ? err.message : 'Failed to search symptoms');
+          }
         }
       } finally {
         if (isMounted) {
-          setIsLoading(false);
+          setIsSearching(false);
         }
       }
     };
 
-    fetchSymptoms();
+    searchSymptoms();
     
     return () => {
       isMounted = false;
+      abortController.abort();
     };
-  }, []);
+  }, [debouncedSearchTerm]);
 
-  // Filter symptoms based on search term
+  // Memoize filtered symptoms for dropdown
   const filteredSymptoms = useMemo(() => {
-    try {
-      const searchLower = (searchTerm || '').toLowerCase().trim();
-      
-      // If no search term or less than 2 characters, return empty array
-      if (searchLower.length < 2) {
-        return [];
-      }
-      
-      return symptoms
-        .filter(symptom => {
-          if (!symptom?.name) return false;
-          
-          // Check name
-          if (symptom.name.toLowerCase().includes(searchLower)) return true;
-          
-          // Check synonyms
-          return Array.isArray(symptom.synonyms) && 
-            symptom.synonyms.some(synonym => 
-              typeof synonym === 'string' && 
-              synonym.toLowerCase().includes(searchLower)
-            );
-        })
-        .sort((a, b) => a.name.localeCompare(b.name));
-        
-    } catch (err) {
-      console.error('Error filtering symptoms:', err);
-      return [];
-    }
-  }, [searchTerm, symptoms]);
+    return symptoms;
+  }, [symptoms]);
 
   // Handle symptom selection
   const handleSymptomSelect = (symptom: Symptom) => {
@@ -153,20 +192,6 @@ export function SymptomSelector({ selectedSymptoms = [], onSymptomsChange }: Sym
     }
   };
 
-  // Loading state
-  if (isLoading) {
-    return (
-      <div className="space-y-3">
-        <label className="text-sm font-medium text-foreground">
-          Select Symptoms *
-        </label>
-        <div className="flex items-center justify-center p-8 bg-muted/20 rounded-lg border border-border/30">
-          <Loader2 className="h-6 w-6 animate-spin mr-3 text-primary" />
-          <span className="text-sm text-muted-foreground">Loading symptoms database...</span>
-        </div>
-      </div>
-    );
-  }
 
   // Error state
   if (error) {
@@ -198,6 +223,7 @@ export function SymptomSelector({ selectedSymptoms = [], onSymptomsChange }: Sym
           symptoms={symptoms}
           filteredSymptoms={filteredSymptoms}
           isLoading={isLoading}
+          isSearching={isSearching}
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
           onSymptomSelect={handleSymptomSelect}
