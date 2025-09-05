@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import defaultTheme from 'tailwindcss/defaultTheme';
 
 export default {
 	darkMode: ["class"],
@@ -17,6 +18,7 @@ export default {
 				'2xl': '1400px'
 			}
 		},
+
 		animation: {
 			aurora: 'aurora 20s ease-in-out infinite alternate',
 		},
@@ -82,8 +84,8 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				'geist': ['Geist', 'system-ui', 'sans-serif'],
-				'jakarta': ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
+				'sans': ['var(--font-geist-sans)', 'Geist', 'system-ui', 'sans-serif'],
+				'heading': ['var(--font-plus-jakarta-sans)', 'Plus Jakarta Sans', 'system-ui', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',

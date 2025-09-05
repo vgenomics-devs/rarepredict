@@ -22,12 +22,12 @@ export function SymptomDetailModal({
   if (!isOpen || !symptom) return null;
 
   return (
-    <div 
-      className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in" 
+    <div
+      className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in"
       onClick={onClose}
     >
-      <Card 
-        className="bg-background/95 backdrop-blur-md border border-border/50 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-hidden shadow-2xl animate-scale-in" 
+      <Card
+        className="bg-background/95 backdrop-blur-md border border-border/50 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-hidden shadow-2xl animate-scale-in"
         onClick={e => e.stopPropagation()}
       >
         <div className="flex flex-col h-full max-h-[90vh]">
@@ -47,8 +47,8 @@ export function SymptomDetailModal({
                 )}
               </div>
             </div>
-            <Button 
-              variant="ghost" 
+            <Button
+              variant="ghost"
               size="sm"
               onClick={onClose}
               className="shrink-0 ml-4 hover:bg-background/80"
@@ -75,9 +75,9 @@ export function SymptomDetailModal({
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {symptom.synonyms.map((synonym, index) => (
-                    <Badge 
-                      key={index} 
-                      variant="secondary" 
+                    <Badge
+                      key={index}
+                      variant="secondary"
                       className="text-xs bg-accent/50 text-accent-foreground hover:bg-accent/70 transition-colors"
                     >
                       {synonym}
@@ -91,9 +91,9 @@ export function SymptomDetailModal({
               <div>
                 <h3 className="font-semibold mb-3 text-foreground">External References</h3>
                 <div className="space-y-2">
-                  <a 
-                    href={`https://hpo.jax.org/app/browse/term/${symptom.hpoid}`} 
-                    target="_blank" 
+                  <a
+                    href={`https://hpo.jax.org/app/browse/term/${symptom.hpoid}`}
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center text-sm text-primary hover:text-primary/80 transition-colors bg-primary/5 hover:bg-primary/10 p-3 rounded-lg border border-primary/20"
                   >
@@ -108,14 +108,14 @@ export function SymptomDetailModal({
           {/* Footer */}
           <div className="p-6 border-t border-border/30 bg-gradient-to-r from-transparent to-muted/20">
             <div className="flex justify-end gap-3">
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 onClick={onClose}
                 className="hover:bg-background/80"
               >
                 Close
               </Button>
-              <Button 
+              <Button
                 onClick={() => {
                   onToggleSymptom(symptom);
                   onClose();

@@ -1,11 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import {
-  motion,
-  AnimatePresence,
-  useScroll,
-  useMotionValueEvent,
-} from "motion/react";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 
@@ -22,15 +17,16 @@ export const FloatingNav = ({
 }) => {
   const { scrollYProgress } = useScroll();
 
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
 
   useMotionValueEvent(scrollYProgress, "change", (current) => {
     // Check if current is not undefined and is a number
     if (typeof current === "number") {
-      let direction = current! - scrollYProgress.getPrevious()!;
+      const direction = current! - scrollYProgress.getPrevious()!;
 
       if (scrollYProgress.get() < 0.05) {
-        setVisible(false);
+        // At the very top: keep navbar visible
+        setVisible(true);
       } else {
         if (direction < 0) {
           setVisible(true);
@@ -60,10 +56,24 @@ export const FloatingNav = ({
           className
         )}
       >
-        {navItems.map((navItem: any, idx: number) => (
+        {navItems.map((navItem: { name: string; link: string; icon?: JSX.Element }, idx: number) => (
           <a
             key={`link=${idx}`}
             href={navItem.link}
+            onClick={(e) => {
+              if (typeof navItem.link === 'string' && navItem.link.startsWith('#')) {
+                e.preventDefault();
+                const id = navItem.link.slice(1);
+                if (!id) {
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                  return;
+                }
+                const el = document.getElementById(id);
+                if (el) {
+                  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }
+            }}
             className={cn(
               "relative text-white/90 hover:text-white items-center flex space-x-2 px-4 py-2 rounded-xl hover:bg-white/10 transition-all duration-300 font-medium"
             )}

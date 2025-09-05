@@ -24,7 +24,8 @@ export const SparklesCore: React.FC<SparklesCoreProps> = ({
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-  const [particles, setParticles] = useState<Array<{
+  // Use ref to store particles for animation loop
+  const particlesRef = useRef<Array<{
     x: number;
     y: number;
     size: number;
@@ -45,93 +46,108 @@ export const SparklesCore: React.FC<SparklesCoreProps> = ({
     const updateDimensions = () => {
       if (canvas.parentElement) {
         const { width, height } = canvas.parentElement.getBoundingClientRect();
-        canvas.width = width;
-        canvas.height = height;
-        setDimensions({ width, height });
+        // Only update if dimensions actually changed
+        if (width !== dimensions.width || height !== dimensions.height) {
+          canvas.width = width;
+          canvas.height = height;
+          setDimensions({ width, height });
+          return { width, height };
+        }
       }
+      return { width: canvas.width, height: canvas.height };
     };
 
-    // Create particles
-    const createParticles = () => {
-      const newParticles = [];
-      const particleCount = Math.floor((particleDensity * dimensions.width * dimensions.height) / 10000);
-      
-      for (let i = 0; i < particleCount; i++) {
-        newParticles.push({
-          x: Math.random() * dimensions.width,
-          y: Math.random() * dimensions.height,
-          size: Math.random() * (maxSize - minSize) + minSize,
-          speedX: (Math.random() - 0.5) * 0.2,
-          speedY: (Math.random() - 0.5) * 0.2,
-          opacity: Math.random() * 0.5 + 0.1,
-        });
-      }
-      
-      setParticles(newParticles);
-    };
-
-    // Animation loop
+    // Initial setup
+    const { width, height } = updateDimensions();
+    
+    // Create initial particles
+    const initialParticles = [];
+    const particleCount = Math.floor((particleDensity * width * height) / 10000);
+    
+    for (let i = 0; i < particleCount; i++) {
+      initialParticles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        size: Math.random() * (maxSize - minSize) + minSize,
+        speedX: (Math.random() - 0.5) * 0.2,
+        speedY: (Math.random() - 0.5) * 0.2,
+        opacity: Math.random() * 0.5 + 0.1,
+      });
+    }
+    
+    // Animation loop using requestAnimationFrame
     let animationId: number;
-    const animate = () => {
+    let lastTime = 0;
+    
+    // Initialize particles ref
+    particlesRef.current = initialParticles;
+    
+    const animate = (currentTime: number) => {
       if (!ctx) return;
       
+      // Calculate delta time for smooth animation
+      const deltaTime = currentTime - lastTime;
+      lastTime = currentTime;
+      
+      // Throttle updates for better performance
+      if (deltaTime < 16) { // ~60fps
+        animationId = requestAnimationFrame(animate);
+        return;
+      }
+      
+      const { width: currentWidth, height: currentHeight } = updateDimensions();
+      
       // Clear canvas
-      ctx.clearRect(0, 0, dimensions.width, dimensions.height);
+      ctx.clearRect(0, 0, currentWidth, currentHeight);
       
       // Update and draw particles
-      setParticles(prevParticles => 
-        prevParticles.map(particle => {
-          // Update position
-          let newX = particle.x + particle.speedX;
-          let newY = particle.y + particle.speedY;
-          
-          // Bounce off edges
-          if (newX < 0 || newX > dimensions.width) {
-            particle.speedX *= -1;
-            newX = Math.max(0, Math.min(newX, dimensions.width));
-          }
-          if (newY < 0 || newY > dimensions.height) {
-            particle.speedY *= -1;
-            newY = Math.max(0, Math.min(newY, dimensions.height));
-          }
-          
-          // Draw particle
-          ctx.beginPath();
-          ctx.arc(newX, newY, particle.size, 0, Math.PI * 2);
-          ctx.fillStyle = `${particleColor}${Math.floor(particle.opacity * 255).toString(16).padStart(2, '0')}`;
-          ctx.fill();
-          
-          return {
-            ...particle,
-            x: newX,
-            y: newY,
-          };
-        })
-      );
+      const updatedParticles = particlesRef.current.map(particle => {
+        // Create a new particle object to avoid mutating the original
+        const updatedParticle = { ...particle };
+        
+        // Update position with delta time for smooth animation
+        updatedParticle.x += updatedParticle.speedX * (deltaTime / 16);
+        updatedParticle.y += updatedParticle.speedY * (deltaTime / 16);
+        
+        // Bounce off edges with damping
+        if (updatedParticle.x < 0 || updatedParticle.x > currentWidth) {
+          updatedParticle.speedX *= -0.9;
+          updatedParticle.x = Math.max(0, Math.min(updatedParticle.x, currentWidth));
+        }
+        if (updatedParticle.y < 0 || updatedParticle.y > currentHeight) {
+          updatedParticle.speedY *= -0.9;
+          updatedParticle.y = Math.max(0, Math.min(updatedParticle.y, currentHeight));
+        }
+        
+        // Draw particle
+        ctx.beginPath();
+        ctx.arc(updatedParticle.x, updatedParticle.y, updatedParticle.size, 0, Math.PI * 2);
+        
+        // Set fill style with opacity
+        const opacityHex = Math.floor(updatedParticle.opacity * 255).toString(16).padStart(2, '0');
+        ctx.fillStyle = `${particleColor}${opacityHex}`;
+        ctx.fill();
+        
+        return updatedParticle;
+      });
       
+      // Update the particles ref for the next frame
+      particlesRef.current = updatedParticles;
+      
+      // Continue animation loop
       animationId = requestAnimationFrame(animate);
     };
-
-    // Handle resize
-    const handleResize = () => {
-      updateDimensions();
-      createParticles();
-    };
-
-    // Initialize
-    updateDimensions();
-    createParticles();
+    
+    // Start animation
     animationId = requestAnimationFrame(animate);
     
-    // Add event listeners
-    window.addEventListener("resize", handleResize);
-    
-    // Cleanup
+    // Clean up animation frame on unmount
     return () => {
-      window.removeEventListener("resize", handleResize);
-      cancelAnimationFrame(animationId);
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
     };
-  }, [dimensions, maxSize, minSize, particleDensity, particleColor]);
+  }, [dimensions, maxSize, minSize, particleDensity, particleColor]); // Removed particles from dependencies
 
   return (
     <div 

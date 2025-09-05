@@ -4,10 +4,45 @@
 
 /* Metallic shine effect */
 @keyframes metal-shine {
-  0% { filter: brightness(1) contrast(1.1); }
-  50% { filter: brightness(1.1) contrast(1.2); }
-  100% { filter: brightness(1) contrast(1.1); }
+  0% {
+    filter: brightness(1) contrast(1.1);
+  }
+
+  50% {
+    filter: brightness(1.1) contrast(1.2);
+  }
+
+  100% {
+    filter: brightness(1) contrast(1.1);
+  }
 }
+
+h1,
+h2,
+h3,
+div {
+  font-family: Geist;
+
+}
+
+span,
+label,
+p,
+strong,
+button {
+  font-family: Plus Jakarta Sans;
+
+}
+
+/* button {
+  width: 184px;
+  height: 50px;
+  padding: 16px 40px;
+  color: white;
+  background-color: black;
+  font-weight: 600;
+  font-size: 18px;
+} */
 
 /* Metallic noise texture */
 .metallic-shine {
@@ -23,7 +58,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: 
+  background:
     radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
     radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
   background-size: 50px 50px, 100px 100px;
@@ -32,10 +67,13 @@
 }
 
 @keyframes aurora-flow {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateX(-50%) skewY(-12deg) scale(1);
     opacity: 0.6;
   }
+
   50% {
     transform: translateX(50%) skewY(-8deg) scale(1.1);
     opacity: 0.8;
@@ -43,10 +81,13 @@
 }
 
 @keyframes aurora-flow-reverse {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateX(30%) skewY(8deg) scale(0.9);
     opacity: 0.4;
   }
+
   50% {
     transform: translateX(-30%) skewY(12deg) scale(1.2);
     opacity: 0.6;
@@ -58,6 +99,7 @@
     transform: scale(1) rotate(0deg);
     opacity: 0.3;
   }
+
   100% {
     transform: scale(1.1) rotate(5deg);
     opacity: 0.5;
@@ -141,7 +183,7 @@ All colors MUST be HSL for consistent theming.
   .bg-size-200 {
     background-size: 200% 200%;
   }
-  
+
   .bg-pos-100 {
     background-position: 100% 0;
   }
@@ -192,5 +234,55 @@ All colors MUST be HSL for consistent theming.
 
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Custom scrollbar styles */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--muted));
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground) / 0.3);
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.5);
+  }
+
+  /* Firefox scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted-foreground) / 0.3) hsl(var(--muted));
+  }
+
+  /* Custom scrollbar for results */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted-foreground) / 0.3) transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground) / 0.2);
+    border-radius: 3px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.4);
   }
 }
