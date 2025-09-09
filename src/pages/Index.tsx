@@ -33,6 +33,15 @@ interface StoredPredictionData {
   timestamp: number;
 }
 
+const BLOCKED_KEYS = new Set(['e', 'E', '+', '-', '.']);
+function clamp(n: number, min: number, max: number) {
+  if (Number.isNaN(n)) return min;
+  return Math.min(max, Math.max(min, n));
+}
+
+function sanitizePaste(raw: string) {
+  return raw.replace(/\D+/g, '');
+}
 function CompareDemo() {
   return (
     <div className="p-4 border rounded-3xl dark:bg-neutral-900 bg-neutral-100 border-neutral-200 dark:border-neutral-800 px-4">
@@ -363,21 +372,36 @@ const Index = () => {
                           </label>
                           <div className="relative">
                             <Input
-                              type="number"
-                              value={ageYears === 0 ? '' : ageYears}
-                              onChange={(e) => {
-                                const value = e.target.value;
-                                if (value === '') setAgeYears(0);
-                                else {
-                                  const numValue = parseInt(value, 10);
-                                  if (!isNaN(numValue)) setAgeYears(Math.min(120, Math.max(0, numValue)));
+                              type="text"                     // use text to fully control what's allowed
+                              inputMode="numeric"             // mobile numeric keypad
+                              pattern="\d*"
+                              autoComplete="off"
+                              value={ageYears === 0 ? '' : String(ageYears)}
+                              onKeyDown={(e) => {
+                                if (BLOCKED_KEYS.has(e.key)) e.preventDefault();
+                                // allow control/navigation keys; block any non-digit
+                                if (!e.ctrlKey && !e.metaKey && e.key.length === 1 && /\D/.test(e.key)) {
+                                  e.preventDefault();
                                 }
                               }}
-                              min="0"
-                              max="120"
-                              className="pr-8"
+                              onPaste={(e) => {
+                                e.preventDefault();
+                                const digits = sanitizePaste(e.clipboardData.getData('text'));
+                                const next = clamp(parseInt(digits || '0', 10), 0, 120);
+                                setAgeYears(next);
+                              }}
+                              onChange={(e) => {
+                                const digits = e.target.value.replace(/\D+/g, '');
+                                const next = clamp(parseInt(digits || '0', 10), 0, 120);
+                                // preserve empty string for UX so the field can be cleared
+                                if (digits === '') setAgeYears(0);
+                                else setAgeYears(next);
+                              }}
+                              onWheel={(e) => (e.target as HTMLInputElement).blur()}  // prevent mouse-wheel changing values
                               placeholder="0"
+                              className="pr-8"
                             />
+
                             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">yrs</span>
                           </div>
                         </div>
@@ -564,18 +588,9 @@ const Index = () => {
           </div>
         </section>
 
-
-
-
-
-
-
-
-
-
         {/* Trust Indicators */}
         {currentStep === 'age' && (
-          <section className="py-16">
+          <section className="py-16 relative">
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-accent/5 to-transparent" />
             <div className="max-w-7xl mx-auto px-4 relative">
               <div className="text-center mb-12">
