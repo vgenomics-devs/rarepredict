@@ -40,7 +40,7 @@ export function HeroSection({
   };
 
   return (
-    <AuroraBackground>
+    <AuroraBackground backgroundImage="/Group-228-2-scaled.jpg">
       <NavBar />
       <motion.div
         initial={{ opacity: 0.0, y: 40 }}
@@ -54,12 +54,12 @@ export function HeroSection({
       >
         <div className="font-sans">
           <h1 className="text-4xl md:text-5xl font-medium bg-clip-text text-transparent bg-gradient-to-b from-neutral-800 to-neutral-600 dark:from-neutral-200 dark:to-neutral-400">
-            <span className="block mb-4 text-foreground/90 dark:text-foreground/80 font-sans">Your health journey starts with</span>
+            <span className="block mb-4 text-white  font-sans">Your health journey starts with</span>
             <span className="relative inline-block">
               <div className="inline-block">
                 <FlipWords
                   words={['understanding', 'clarity', 'precision', 'empowerment']}
-                  className="font-bold text-black dark:text-white font- md:text-5xl"
+                  className="font-bold text-white dark:text-white font- md:text-5xl"
                   duration={3000}
                 />
               </div>

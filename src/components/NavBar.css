@@ -31,14 +31,12 @@ body {
 
 .navbar-links a {
     text-decoration: none;
-    color: #333;
-    font-weight: 600;
-    transition: color 0.2s ease-in-out;
+    color: #fff;
+   
 }
 
 .navbar-links a:hover {
-    color: black;
-    font-weight: bold;
+    color: #FDB792;
 }
 
 /* Hamburger icon (hidden on desktop) */
