@@ -593,7 +593,7 @@ const DiseaseDetails = () => {
   return (
     <div className="min-h-screen bg-muted/30 flex flex-col">
       {/* Header */}
-      <header className="bg-background border-b shadow-sm sticky top-0 z-40">
+      <header className="bg-background border-b shadow-sm fixed top-0 z-40 w-full">
         <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="flex items-center gap-4 mb-4">
             <Button

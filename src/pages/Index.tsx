@@ -128,6 +128,7 @@ const Index = () => {
               setAgeMonths(0);
             }
             setShowResults(predictions.length > 0);
+            localStorage.removeItem('rareDiseasePredictionData');
 
             // If we have predictions, update the URL with the prediction ID
             if (predictions.length > 0) {
@@ -433,11 +434,19 @@ const Index = () => {
                         </div>
                       </div>
 
-                      <div className="flex items-start gap-2 pt-4 border-t border-border/20">
-                        <Info className="h-4 w-4 mt-0.5 text-muted-foreground/70 flex-shrink-0" />
-                        <p className="text-xs text-muted-foreground leading-relaxed">
-                          For ages under 1 year, set years to 0. Predictions use whole years for analysis.
-                        </p>
+                      <div className="flex items-start flex-col gap-2 pt-4 border-t border-border/20">
+                        <div className="flex gap-2">
+                          <Info className="h-4 w-4 mt-0.5 text-muted-foreground/70 flex-shrink-0" />
+                          <p className="text-xs text-muted-foreground leading-relaxed">
+                            For ages under 1 year, set years to 0. Predictions use whole years for analysis.
+                          </p></div>
+                        <div className="flex gap-2">
+                          <Info className="h-4 w-4 mt-0.5 text-muted-foreground/70 flex-shrink-0" />
+                          <p className="text-xs text-muted-foreground leading-relaxed">
+                            Rare Predict estimates possible rare genetic conditions only; it is not a general symptom checker or a diagnostic tool. Use only after high genetic risk has been identified. Results are informational; review with a qualified healthcare professional for clinical guidance.
+                          </p>
+
+                        </div>
                       </div>
 
                       {formErrors.age && (
